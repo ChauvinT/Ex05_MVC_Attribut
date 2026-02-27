@@ -1,0 +1,103 @@
+﻿@model Exercice_5_MVC.ViewModel.OrderViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CustomerName" class="control-label"></label>
+                <input asp-for="CustomerName" class="form-control" />
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingAddress" class="control-label"></label>
+                <input asp-for="ShippingAddress" class="form-control" />
+                <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderStatus" class="control-label"></label>
+                <input asp-for="OrderStatus" class="form-control" />
+                <span asp-validation-for="OrderStatus" class="text-danger"></span>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Articles[1].Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Articles[1].Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Articles[1].Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Articles[1].StockQuantity)
+                        </th>
+                        <th>
+                            Qty
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < ViewBag.ArticlesReference.Count; i++)
+                    {
+                        var item = ViewBag.ArticlesReference[i];
+                        <tr>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Description
+                            </td>
+                            <td>
+                                @item.Price
+                            </td>
+                            <td>
+                                @item.StockQuantity
+                            </td>
+                            <td>
+                                <input type="hidden" name="OrderDetails[@i].Order" />
+                                <input type="hidden" name="OrderDetails[@i].Article" />
+                                <input type="hidden" name="OrderDetails[@i].ArticleId" value="@item.Id" />
+                                <input type="hidden" name="OrderDetails[@i].UnitPrice" value="@item.Price" />
+                                <input type="number" name="OrderDetails[@i].Quantity" min="0" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <input type="submit" name="action" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to Warehouses", "Index", "Warehouse")
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
